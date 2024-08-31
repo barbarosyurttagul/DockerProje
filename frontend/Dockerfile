@@ -1,21 +1,25 @@
 # frontend/Dockerfile
 
-# Base image
-FROM node:18-alpine
+# 1. Base image olarak Node.js LTS sürümünü kullanıyoruz
+FROM node:18-alpine AS base
 
-# Set working directory
+# 2. Çalışma dizinini ayarlıyoruz
 WORKDIR /app
 
-# Install dependencies
-COPY package.json package-lock.json ./
+# 3. package.json ve package-lock.json dosyalarını kopyalıyoruz
+COPY package*.json ./
+
+# 4. Projenin bağımlılıklarını yüklüyoruz
 RUN npm install
 
-# Copy the rest of the application
+# 5. Proje dosyalarını kopyalıyoruz
 COPY . .
 
-# Build the application
+# 6. Uygulamayı derliyoruz
 RUN npm run build
 
-# Expose the port and start the app
+# 7. Kullanılacak portu belirtiyoruz
 EXPOSE 3000
+
+# 8. Uygulamayı başlatıyoruz
 CMD ["npm", "start"]

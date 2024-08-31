@@ -6,16 +6,19 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-# Build stage
+# Build image
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["./YourProjectName/YourProjectName.csproj", "./"]
-RUN dotnet restore "YourProjectName.csproj"
 COPY . .
-RUN dotnet publish "./YourProjectName/YourProjectName.csproj" -c Release -o /app/publish
+RUN dotnet restore "./webapi/webapi.csproj"
+RUN dotnet build "./webapi/webapi.csproj" -c Release -o /app/build
+
+# Publish the app
+FROM build AS publish
+RUN dotnet publish "./webapi/webapi.csproj" -c Release -o /app/publish
 
 # Final stage
 FROM base AS final
 WORKDIR /app
-COPY --from=build /app/publish .
-ENTRYPOINT ["dotnet", "./YourProjectName/bin/debug/net8.0/YourProjectName.dll"]
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "./webapi/bin/debug/net8.0/webapi.dll"]

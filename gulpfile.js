@@ -5,12 +5,12 @@ const shell = require('gulp-shell');
 
 // Docker Compose komutunu çalıştıracak görev
 gulp.task('docker-up', shell.task([
-  'docker-compose up --build'
+  'docker compose up --build'
 ]));
 
 // Docker Compose konteynerlerini durduracak görev
 gulp.task('docker-down', shell.task([
-  'docker-compose down'
+  'docker compose down'
 ]));
 
 // Frontend ve Backend uygulamalarını başlatacak genel bir görev
