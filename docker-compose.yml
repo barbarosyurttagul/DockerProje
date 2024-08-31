@@ -17,13 +17,9 @@ services:
 
   backend:
     build:
-      context: ./backend
+      context: ./backend/webapi
     ports:
       - "5001:80"
-    volumes:
-      - ./backend:/app
-      - /app/bin
-      - /app/obj
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
